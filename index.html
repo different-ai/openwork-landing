@@ -268,18 +268,18 @@
     <section id="vision" class="py-24 px-6 border-t border-white/5">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold mb-4">Under the Hood</h2>
-          <p class="text-zinc-400">Native performance, standard protocols.</p>
+          <h2 class="text-3xl font-bold mb-4">How It Runs</h2>
+          <p class="text-zinc-400">Local-first by default, remote when you need it.</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-4 text-sm">
           <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
             <i data-lucide="hard-drive" class="w-6 h-6 text-zinc-500 mt-1"></i>
             <div>
-              <h3 class="font-bold text-white mb-1">Host Mode</h3>
+              <h3 class="font-bold text-white mb-1">Run Locally (recommended)</h3>
               <p class="text-zinc-400">
-                Spawns <code>opencode serve</code> locally on loopback. Perfect for
-                your primary workstation.
+                Easiest way to start: OpenWork runs OpenCode on your computer and connects
+                over loopback. Great for day-to-day work.
               </p>
             </div>
           </div>
@@ -287,10 +287,13 @@
           <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
             <i data-lucide="smartphone" class="w-6 h-6 text-zinc-500 mt-1"></i>
             <div>
-              <h3 class="font-bold text-white mb-1">Client Mode</h3>
+              <h3 class="font-bold text-white mb-1">Run Remotely (for long tasks)</h3>
               <p class="text-zinc-400">
-                Connects to an existing server via URL. Control your home server tasks
-                from any device.
+                Connect to an OpenCode server you host. Ideal for hours-long runs—you can
+                close your laptop and check in from anywhere.
+              </p>
+              <p class="text-zinc-500 mt-2">
+                Requires a remote server to be set up first.
               </p>
             </div>
           </div>
@@ -300,19 +303,19 @@
             <div>
               <h3 class="font-bold text-white mb-1">Permissioned</h3>
               <p class="text-zinc-400">
-                Granular “Allow once / always / deny” controls for file access and tool
-                execution.
+                OpenWork surfaces OpenCode permissions with clear prompts (allow once / always / deny)
+                for files and tool execution.
               </p>
             </div>
           </div>
 
           <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
-            <i data-lucide="terminal" class="w-6 h-6 text-zinc-500 mt-1"></i>
+            <i data-lucide="sparkles" class="w-6 h-6 text-zinc-500 mt-1"></i>
             <div>
-              <h3 class="font-bold text-white mb-1">Tech Stack</h3>
+              <h3 class="font-bold text-white mb-1">First Run Flow</h3>
               <p class="text-zinc-400">
-                Built with Tauri, Rust, SolidJS, and the OpenCode SDK. Fast,
-                lightweight, and local-first.
+                Choose local vs remote, authorize the folders you want it to access, then start a session.
+                OpenWork tracks plan + progress while you approve what matters.
               </p>
             </div>
           </div>
