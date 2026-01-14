@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenWork - The Native GUI for OpenCode</title>
+    <meta
+      name="description"
+      content="OpenWork is an open-source, Claude Work-style native desktop GUI for OpenCode. Run agentic workflows with permissions, sessions, and skills." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .glass-panel {
+        background: rgba(24, 24, 27, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .gradient-text {
+        background: linear-gradient(to right, #ffffff, #a1a1aa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(99, 102, 241, 0.15) 0%,
+          rgba(0, 0, 0, 0) 70%
+        );
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      @keyframes fade-in-up {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in-up {
+        animation: fade-in-up 700ms ease-out both;
+      }
+
+      code {
+        font-family:
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Monaco,
+          Consolas,
+          "Liberation Mono",
+          "Courier New",
+          monospace;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-zinc-950 text-white selection:bg-indigo-500/30 selection:text-white overflow-x-hidden">
+    <div class="glow"></div>
+
+    <nav
+      class="fixed w-full z-50 top-0 border-b border-white/5 bg-zinc-950/80 backdrop-blur-md">
+      <div
+        class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2" aria-label="OpenWork">
+          <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+            <i data-lucide="command" class="text-black w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-lg tracking-tight">OpenWork</span>
+        </a>
+
+        <div
+          class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+          <a href="#features" class="hover:text-white transition-colors">How it works</a>
+          <a href="#vision" class="hover:text-white transition-colors">Under the hood</a>
+          <a
+            href="https://github.com/different-ai/openwork"
+            class="hover:text-white transition-colors"
+            rel="noreferrer"
+            target="_blank"
+            >GitHub</a
+          >
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a
+            data-download-dmg
+            href="https://github.com/different-ai/openwork/releases/latest"
+            class="bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-200 transition-colors"
+            >Download <span data-release-tag>v0.1.x</span></a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <header class="pt-32 pb-16 md:pt-48 md:pb-24 px-6">
+      <div class="max-w-4xl mx-auto text-center space-y-8">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-400 mb-4 animate-fade-in-up">
+          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+          <span data-release-tag>v0.1.x</span> Alpha Release
+        </div>
+
+        <h1
+          class="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+          The open-source <br />
+          <span class="gradient-text">Claude Work alternative.</span>
+        </h1>
+
+        <p
+          class="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          A native GUI for OpenCode. Run privileged workflows, control home servers,
+          and manage tasks without ever touching a terminal.
+        </p>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
+          <a
+            data-download-dmg
+            href="https://github.com/different-ai/openwork/releases/latest"
+            class="w-full md:w-auto px-8 py-4 bg-white text-black rounded-xl font-semibold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-xl shadow-white/5"
+            ><i data-lucide="download" class="w-5 h-5"></i>Download DMG</a
+          >
+          <a
+            href="https://github.com/different-ai/openwork"
+            class="w-full md:w-auto px-8 py-4 bg-zinc-900 text-white border border-zinc-800 rounded-xl font-medium text-lg hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
+            rel="noreferrer"
+            target="_blank"
+            ><i data-lucide="github" class="w-5 h-5"></i>Star on GitHub</a
+          >
+        </div>
+
+        <p class="text-zinc-600 text-sm">
+          Alpha build. Expect rough edges.
+          <span class="hidden sm:inline"
+            >If the DMG button doesn’t work, it falls back to the GitHub release page.</span
+          >
+        </p>
+      </div>
+    </header>
+
+    <section class="px-6 pb-24">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex items-end justify-between gap-6">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold">Screenshots</h2>
+            <p class="text-zinc-400 mt-2">
+              Real UI from the current release.
+            </p>
+          </div>
+          <a
+            href="https://github.com/different-ai/openwork"
+            class="hidden md:inline-flex text-sm text-zinc-400 hover:text-white transition-colors items-center gap-2"
+            rel="noreferrer"
+            target="_blank"
+            ><i data-lucide="external-link" class="w-4 h-4"></i>View repo</a
+          >
+        </div>
+
+        <div class="relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+          <figure
+            class="relative glass-panel rounded-2xl overflow-hidden shadow-2xl border-zinc-800/50">
+            <img
+              class="w-full h-auto block"
+              src="https://github.com/user-attachments/assets/7a1b8662-19a0-4327-87c9-c0295a0d54f1"
+              alt="OpenWork main interface"
+              loading="lazy" />
+            <figcaption
+              class="px-6 py-4 text-sm text-zinc-400 border-t border-white/5 bg-zinc-950/40">
+              OpenWork: sessions, streaming output, and permission prompts.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <figure class="glass-panel rounded-2xl overflow-hidden">
+            <img
+              class="w-full h-auto block"
+              src="https://github.com/user-attachments/assets/b500c1c6-a218-42ce-8a11-52787f5642b6"
+              alt="OpenWork skill manager"
+              loading="lazy" />
+            <figcaption class="px-6 py-4 text-sm text-zinc-400">
+              Skills manager: install, import, and manage workflows.
+            </figcaption>
+          </figure>
+
+          <figure class="glass-panel rounded-2xl overflow-hidden">
+            <img
+              class="w-full h-auto block"
+              src="https://github.com/user-attachments/assets/9c864390-de69-48f2-82c1-93b328dd60c3"
+              alt="OpenWork local and remote modes"
+              loading="lazy" />
+            <figcaption class="px-6 py-4 text-sm text-zinc-400">
+              Host mode (local) and client mode (remote server).
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-24 px-6 bg-zinc-950">
+      <div class="max-w-6xl mx-auto mb-16">
+        <h2 class="text-3xl font-bold mb-4">Principles</h2>
+        <p class="text-zinc-400">Built to make agentic work feel like a product, not a script.</p>
+      </div>
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition-colors">
+            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6">
+              <i data-lucide="lock" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Open by Design</h3>
+            <p class="text-zinc-400 leading-relaxed text-sm">
+              No black boxes. No hosted lock-in. OpenWork runs locally on your machine
+              or connects to your private home server.
+            </p>
+          </div>
+
+          <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition-colors">
+            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6">
+              <i data-lucide="package" class="w-6 h-6 text-indigo-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Hyper Extensible</h3>
+            <p class="text-zinc-400 leading-relaxed text-sm">
+              Built-in package manager (<code>opkg</code>) makes it easy to install
+              skills and OpenCode plugins.
+            </p>
+          </div>
+
+          <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition-colors">
+            <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6">
+              <i data-lucide="user" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Non-technical Default</h3>
+            <p class="text-zinc-400 leading-relaxed text-sm">
+              Originally built to help non-technical users run privileged workflows
+              without touching a terminal or fighting config sprawl.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vision" class="py-24 px-6 border-t border-white/5">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold mb-4">Under the Hood</h2>
+          <p class="text-zinc-400">Native performance, standard protocols.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+          <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
+            <i data-lucide="hard-drive" class="w-6 h-6 text-zinc-500 mt-1"></i>
+            <div>
+              <h3 class="font-bold text-white mb-1">Host Mode</h3>
+              <p class="text-zinc-400">
+                Spawns <code>opencode serve</code> locally on loopback. Perfect for
+                your primary workstation.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
+            <i data-lucide="smartphone" class="w-6 h-6 text-zinc-500 mt-1"></i>
+            <div>
+              <h3 class="font-bold text-white mb-1">Client Mode</h3>
+              <p class="text-zinc-400">
+                Connects to an existing server via URL. Control your home server tasks
+                from any device.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
+            <i data-lucide="shield-check" class="w-6 h-6 text-zinc-500 mt-1"></i>
+            <div>
+              <h3 class="font-bold text-white mb-1">Permissioned</h3>
+              <p class="text-zinc-400">
+                Granular “Allow once / always / deny” controls for file access and tool
+                execution.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex items-start gap-4">
+            <i data-lucide="terminal" class="w-6 h-6 text-zinc-500 mt-1"></i>
+            <div>
+              <h3 class="font-bold text-white mb-1">Tech Stack</h3>
+              <p class="text-zinc-400">
+                Built with Tauri, Rust, SolidJS, and the OpenCode SDK. Fast,
+                lightweight, and local-first.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-black border-t border-white/10 py-12 px-6">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 bg-white rounded flex items-center justify-center">
+            <i data-lucide="command" class="text-black w-3 h-3"></i>
+          </div>
+          <span class="font-bold text-white">OpenWork</span>
+        </div>
+
+        <div class="text-zinc-500 text-sm">&copy; 2026 OpenWork Project.</div>
+
+        <div class="flex gap-6">
+          <a
+            href="https://github.com/different-ai/openwork"
+            class="text-zinc-500 hover:text-white transition-colors flex items-center gap-2"
+            rel="noreferrer"
+            target="_blank"
+            ><i data-lucide="github" class="w-4 h-4"></i>different-ai/openwork</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+
+      (async () => {
+        const FALLBACK = "https://github.com/different-ai/openwork/releases/latest";
+
+        try {
+          const response = await fetch(
+            "https://api.github.com/repos/different-ai/openwork/releases/latest",
+            {
+              headers: {
+                Accept: "application/vnd.github+json",
+              },
+            },
+          );
+
+          if (!response.ok) return;
+
+          const data = await response.json();
+          const releaseTag =
+            typeof data?.tag_name === "string" && data.tag_name.length > 0
+              ? data.tag_name
+              : null;
+
+          if (releaseTag) {
+            document
+              .querySelectorAll("[data-release-tag]")
+              .forEach((el) => (el.textContent = releaseTag));
+          }
+
+          const assets = Array.isArray(data?.assets) ? data.assets : [];
+          const dmgs = assets
+            .filter(
+              (asset) =>
+                typeof asset?.name === "string" &&
+                asset.name.toLowerCase().endsWith(".dmg") &&
+                typeof asset?.browser_download_url === "string",
+            )
+            .map((asset) => ({
+              name: asset.name,
+              url: asset.browser_download_url,
+            }));
+
+          if (dmgs.length === 0) return;
+
+          const preferred =
+            dmgs.find((d) => d.name.toLowerCase().includes("universal")) ||
+            dmgs.find((d) => d.name.toLowerCase().includes("aarch64")) ||
+            dmgs[0];
+
+          document.querySelectorAll("[data-download-dmg]").forEach((el) => {
+            if (el instanceof HTMLAnchorElement) el.href = preferred.url || FALLBACK;
+          });
+        } catch {
+          // Keep fallback links.
+        }
+      })();
+    </script>
+  </body>
+</html>
