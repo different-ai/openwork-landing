@@ -81,9 +81,9 @@
 
   <!-- headline -->
   <text x="220" y="198" class="sans" font-size="78" font-weight="820" fill="#FFFFFF" letter-spacing="-1">OpenWork</text>
-  <text x="220" y="262" class="sans" font-size="42" font-weight="700" fill="url(#title)" letter-spacing="-0.5">The native GUI</text>
-  <text x="220" y="306" class="sans" font-size="42" font-weight="700" fill="url(#title)" letter-spacing="-0.5">for OpenCode</text>
-  <text x="220" y="352" class="sans" font-size="20" font-weight="520" fill="#A1A1AA" fill-opacity="0.96">Local-first sessions • Plugins • Skills</text>
+  <text x="220" y="262" class="sans" font-size="40" font-weight="700" fill="url(#title)" letter-spacing="-0.5">The open-source</text>
+  <text x="220" y="306" class="sans" font-size="40" font-weight="700" fill="url(#title)" letter-spacing="-0.5">Claude Work alternative</text>
+  <text x="220" y="352" class="sans" font-size="20" font-weight="520" fill="#A1A1AA" fill-opacity="0.96">Per-project workflows • Plugins • Skills</text>
 
   <!-- chips -->
   <g transform="translate(220 382)">

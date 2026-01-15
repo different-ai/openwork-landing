@@ -3,28 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OpenWork - The Native GUI for OpenCode</title>
+    <title>OpenWork - The open-source Claude Work alternative</title>
     <meta
       name="description"
-      content="OpenWork is a standards-first, extensible OpenCode GUI—install plugins, manage skills, and tailor workflows per project." />
+      content="OpenWork is the open-source Claude Work alternative powered by OpenCode—run local-first sessions, manage plugins, and install skills." />
 
     <meta name="theme-color" content="#09090b" />
 
     <meta property="og:site_name" content="OpenWork" />
-    <meta property="og:title" content="OpenWork — The Native GUI for OpenCode" />
+    <meta property="og:title" content="OpenWork — The open-source Claude Work alternative" />
     <meta
       property="og:description"
-      content="OpenWork is a standards-first, extensible OpenCode GUI—install plugins, manage skills, and tailor workflows per project." />
+      content="OpenWork is the open-source Claude Work alternative powered by OpenCode—run local-first sessions, manage plugins, and install skills." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="OpenWork — The Native GUI for OpenCode" />
+    <meta name="twitter:title" content="OpenWork — The open-source Claude Work alternative" />
     <meta
       name="twitter:description"
-      content="OpenWork is a standards-first, extensible OpenCode GUI—install plugins, manage skills, and tailor workflows per project." />
+      content="OpenWork is the open-source Claude Work alternative powered by OpenCode—run local-first sessions, manage plugins, and install skills." />
     <meta name="twitter:image" content="/og.png" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -124,12 +124,13 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <a
-            data-download-dmg
-            href="https://github.com/different-ai/openwork/releases/latest"
-            class="bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-200 transition-colors"
-            >Download <span data-release-tag>v0.1.x</span></a
-          >
+            <a
+              data-download-dmg
+              href="https://github.com/different-ai/openwork/releases"
+              class="bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-200 transition-colors"
+              >Download <span data-release-tag>v0.1.x</span></a
+            >
+
         </div>
       </div>
     </nav>
@@ -158,7 +159,7 @@
           class="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
           <a
             data-download-dmg
-            href="https://github.com/different-ai/openwork/releases/latest"
+            href="https://github.com/different-ai/openwork/releases"
             class="w-full md:w-auto px-8 py-4 bg-white text-black rounded-xl font-semibold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-xl shadow-white/5"
             ><i data-lucide="download" class="w-5 h-5"></i>Download DMG</a
           >
@@ -171,12 +172,44 @@
           >
         </div>
 
-        <p class="text-zinc-600 text-sm">
-          Alpha build. Expect rough edges.
-          <span class="hidden sm:inline"
-            >If the DMG button doesn’t work, it falls back to the GitHub release page.</span
-          >
+        <p class="text-zinc-600 text-sm max-w-2xl mx-auto">
+          Early alpha build. macOS may show a security warning on first launch.
         </p>
+
+        <div class="max-w-2xl mx-auto text-left glass-panel rounded-2xl p-6 border border-zinc-800/60">
+          <h3 class="text-sm font-semibold text-white mb-3">Install on macOS</h3>
+          <ol class="list-decimal list-inside space-y-1 text-sm text-zinc-400">
+            <li>Download the DMG and open it.</li>
+            <li>
+              Drag <span class="text-zinc-200 font-medium">OpenWork</span> into
+              <code class="text-zinc-200">Applications</code>.
+            </li>
+            <li>Open OpenWork from Applications.</li>
+          </ol>
+
+          <div class="mt-4 text-sm text-zinc-400">
+            <div class="font-medium text-zinc-200 mb-1">If macOS blocks it</div>
+            <p>
+              Open <span class="text-zinc-200">System Settings → Privacy &amp; Security</span> and click
+              <span class="text-zinc-200">Open Anyway</span> for OpenWork, then try again.
+            </p>
+            <p class="mt-2">
+              You can also Control‑click OpenWork in Applications and choose
+              <span class="text-zinc-200">Open</span>.
+            </p>
+          </div>
+
+          <div class="mt-4 text-xs text-zinc-500">
+            If the download button doesn’t work, use the
+            <a
+              href="https://github.com/different-ai/openwork/releases"
+              class="underline underline-offset-4 hover:text-zinc-300"
+              rel="noreferrer"
+              target="_blank"
+              >GitHub releases page</a
+            >.
+          </div>
+        </div>
       </div>
     </header>
 
@@ -368,34 +401,50 @@
     <script>
       lucide.createIcons();
 
-      (async () => {
-        const FALLBACK = "https://github.com/different-ai/openwork/releases/latest";
+       (async () => {
+         const FALLBACK = "https://github.com/different-ai/openwork/releases";
 
-        try {
-          const response = await fetch(
-            "https://api.github.com/repos/different-ai/openwork/releases/latest",
-            {
-              headers: {
-                Accept: "application/vnd.github+json",
-              },
-            },
-          );
+         try {
+           const response = await fetch(
+             "https://api.github.com/repos/different-ai/openwork/releases?per_page=10",
+             {
+               headers: {
+                 Accept: "application/vnd.github+json",
+               },
+             },
+           );
 
-          if (!response.ok) return;
+           if (!response.ok) return;
 
-          const data = await response.json();
-          const releaseTag =
-            typeof data?.tag_name === "string" && data.tag_name.length > 0
-              ? data.tag_name
-              : null;
+           const releases = await response.json();
+           const list = Array.isArray(releases) ? releases : [];
 
-          if (releaseTag) {
-            document
-              .querySelectorAll("[data-release-tag]")
-              .forEach((el) => (el.textContent = releaseTag));
-          }
+           const pick = list.find((release) => {
+             if (!release || typeof release !== "object") return false;
+             if (release.draft) return false;
 
-          const assets = Array.isArray(data?.assets) ? data.assets : [];
+             const assets = Array.isArray(release.assets) ? release.assets : [];
+             return assets.some(
+               (asset) =>
+                 typeof asset?.name === "string" &&
+                 asset.name.toLowerCase().endsWith(".dmg") &&
+                 typeof asset?.browser_download_url === "string",
+             );
+           });
+
+           if (!pick) return;
+
+           const releaseTag =
+             typeof pick.tag_name === "string" && pick.tag_name.length > 0 ? pick.tag_name : null;
+
+           if (releaseTag) {
+             document
+               .querySelectorAll("[data-release-tag]")
+               .forEach((el) => (el.textContent = releaseTag));
+           }
+
+           const assets = Array.isArray(pick.assets) ? pick.assets : [];
+
           const dmgs = assets
             .filter(
               (asset) =>
