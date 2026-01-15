@@ -469,6 +469,7 @@
           if (dmgs.length === 0) return;
 
           const preferred =
+            dmgs.find((d) => d.name.toLowerCase().includes("adhoc")) ||
             dmgs.find((d) => d.name.toLowerCase().includes("universal")) ||
             dmgs.find((d) => d.name.toLowerCase().includes("aarch64")) ||
             dmgs[0];
