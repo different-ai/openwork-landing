@@ -208,7 +208,7 @@
                 <label class="sr-only" for="openwork-email">Email address</label>
                 <input
                   id="openwork-email"
-                  name="email"
+                  name="newsletter-form-input"
                   type="email"
                   required
                   autocomplete="email"
@@ -220,7 +220,7 @@
                   type="submit"
                   class="px-5 py-3 rounded-xl bg-indigo-500 text-white font-semibold hover:bg-indigo-400 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Get updates
+                  Join waitlist
                 </button>
               </form>
             </div>
@@ -428,7 +428,7 @@
 
       (() => {
         const FORM_ENDPOINT =
-          "https://app.loops.so/api/newsletter-form/cm2uk2jop01mmhkoglglypkme";
+          "https://app.loops.so/api/newsletter-form/cmkhtp90l03np0i1z8iy6kccz";
 
         const form = document.getElementById("openwork-loops-form");
         const emailInput = document.getElementById("openwork-email");
@@ -488,7 +488,7 @@
           const params = new URLSearchParams();
           params.set("email", email);
           params.set("source", "OpenWork landing");
-          params.set("userGroup", "OpenWork updates");
+          params.set("userGroup", "");
 
           try {
             const response = await fetch(FORM_ENDPOINT, {
@@ -507,7 +507,7 @@
             }
 
             if (response.ok && data && data.success) {
-              showMessage("Thanks - you're on the list.", "success");
+              showMessage("Thanks! We'll be in touch!", "success");
               capture("email_signup_success", { source: "hero" });
               form.reset();
               return;
