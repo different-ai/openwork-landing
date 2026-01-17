@@ -188,7 +188,53 @@
           </a>
         </div>
 
-        <p class="text-zinc-600 text-sm max-w-2xl mx-auto">
+        <div class="w-full max-w-2xl mx-auto pt-6">
+          <div class="glass-panel rounded-2xl p-5 md:p-6 text-left">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div class="space-y-1">
+                <p class="text-sm font-semibold text-white">
+                  Get curated skills, workflows, and tutorials
+                </p>
+                <p class="text-sm text-zinc-400">
+                  Join the list for OpenWork updates and other tools we build. 1–2 emails/month.
+                </p>
+              </div>
+
+              <form
+                id="openwork-loops-form"
+                class="flex w-full md:w-auto flex-col sm:flex-row gap-3"
+                novalidate
+              >
+                <label class="sr-only" for="openwork-email">Email address</label>
+                <input
+                  id="openwork-email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  class="w-full sm:w-72 px-4 py-3 rounded-xl bg-zinc-950/40 border border-white/10 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+                />
+                <button
+                  id="openwork-loops-submit"
+                  type="submit"
+                  class="px-5 py-3 rounded-xl bg-indigo-500 text-white font-semibold hover:bg-indigo-400 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  Get updates
+                </button>
+              </form>
+            </div>
+
+            <p
+              id="openwork-loops-message"
+              class="mt-3 text-sm text-zinc-400 hidden"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+        </div>
+
+        <p class="text-zinc-600 text-sm max-w-2xl mx-auto pt-6">
           Signed + notarized macOS DMG — download and drag to Applications.
         </p>
       </div>
@@ -379,6 +425,111 @@
 
     <script>
       lucide.createIcons();
+
+      (() => {
+        const FORM_ENDPOINT =
+          "https://app.loops.so/api/newsletter-form/cm2uk2jop01mmhkoglglypkme";
+
+        const form = document.getElementById("openwork-loops-form");
+        const emailInput = document.getElementById("openwork-email");
+        const submitButton = document.getElementById("openwork-loops-submit");
+        const messageEl = document.getElementById("openwork-loops-message");
+
+        if (!(form instanceof HTMLFormElement)) return;
+        if (!(emailInput instanceof HTMLInputElement)) return;
+        if (!(submitButton instanceof HTMLButtonElement)) return;
+        if (!(messageEl instanceof HTMLParagraphElement)) return;
+
+        const capture = (event, props = {}) => {
+          try {
+            if (window.posthog && typeof window.posthog.capture === "function") {
+              window.posthog.capture(event, props);
+            }
+          } catch {
+            // ignore
+          }
+        };
+
+        const showMessage = (text, variant) => {
+          messageEl.textContent = text;
+          messageEl.classList.remove(
+            "hidden",
+            "text-zinc-400",
+            "text-emerald-400",
+            "text-rose-400",
+          );
+
+          if (variant === "success") {
+            messageEl.classList.add("text-emerald-400");
+          } else if (variant === "error") {
+            messageEl.classList.add("text-rose-400");
+          } else {
+            messageEl.classList.add("text-zinc-400");
+          }
+        };
+
+        const isLikelyValidEmail = (value) => /\S+@\S+\.\S+/.test(value);
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const email = emailInput.value.trim();
+          if (!isLikelyValidEmail(email)) {
+            showMessage("Enter a valid email address.", "error");
+            capture("email_signup_error", { source: "hero", reason: "invalid_email" });
+            emailInput.focus();
+            return;
+          }
+
+          submitButton.disabled = true;
+          showMessage("Submitting...", "info");
+          capture("email_signup_submit", { source: "hero" });
+
+          const params = new URLSearchParams();
+          params.set("email", email);
+          params.set("source", "OpenWork landing");
+          params.set("userGroup", "OpenWork updates");
+
+          try {
+            const response = await fetch(FORM_ENDPOINT, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: params.toString(),
+            });
+
+            let data = null;
+            try {
+              data = await response.json();
+            } catch {
+              // ignore
+            }
+
+            if (response.ok && data && data.success) {
+              showMessage("Thanks - you're on the list.", "success");
+              capture("email_signup_success", { source: "hero" });
+              form.reset();
+              return;
+            }
+
+            const message =
+              (data && typeof data.message === "string" && data.message) ||
+              (response.status === 429
+                ? "Too many signups right now - try again in a minute."
+                : "Something went wrong. Please try again.");
+
+            showMessage(message, "error");
+            capture("email_signup_error", { source: "hero", status: response.status });
+          } catch {
+            // Loops rate limiting can show up as network errors (Cloudflare).
+            showMessage("Too many signups right now - try again in a minute.", "error");
+            capture("email_signup_error", { source: "hero", reason: "network_error" });
+          } finally {
+            submitButton.disabled = false;
+          }
+        });
+      })();
 
        (async () => {
          const FALLBACK = "https://github.com/different-ai/openwork/releases";
